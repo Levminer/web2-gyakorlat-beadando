@@ -1,8 +1,19 @@
-<%- include("partials/header") %>
-<% if(message){ %><p class="message"><%= message %></p><% } %>
-<form method="POST">
-    <input name="username">
-    <input type="password" name="password">
-    <button>Login</button>
-</form>
+<%- include("partials/header", { title: "Bejelentkezés" }) %>
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="auth_box">
+            <div class="heading_container">
+                <h2>Bejelentkezés</h2>
+            </div>
+            <% if (message) { %><div class="alert alert-warning message"><%= message %></div><% } %>
+            <div class="form_container">
+                <form method="POST">
+                    <input class="form-control" name="username" placeholder="Felhasználónév" required>
+                    <input class="form-control" type="password" name="password" placeholder="Jelszó" required>
+                    <button type="submit">Bejelentkezés</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 <%- include("partials/footer") %>

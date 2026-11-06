@@ -1,0 +1,46 @@
+/* Saját kiegészítések a Feane sablonhoz */
+
+.user_option .user_link {
+    color: #ffffff;
+    margin-right: 15px;
+    white-space: nowrap;
+}
+
+.page_section {
+    min-height: 50vh;
+}
+
+.page_section .lead {
+    color: #555555;
+}
+
+.auth_box {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.footer_section .footer_contact .contact_link_box span {
+    display: block;
+    margin: 5px 0;
+}
+
+.footer_section .footer-info .authors {
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+}
+
+.footer_section .footer-info .credits {
+    font-size: 0.85rem;
+    opacity: 0.75;
+}
+
+@media (max-width: 991px) {
+    .user_option {
+        flex-wrap: wrap;
+        margin-top: 15px;
+    }
+
+    .user_option .user_link {
+        margin-bottom: 10px;
+    }
+}

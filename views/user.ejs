@@ -1,4 +1,10 @@
-<%- include("partials/header") %>
-<h1>User page</h1>
-<p>Only for logged in users..</p>
+<%- include("partials/header", { title: "Felhasználó" }) %>
+<section class="page_section layout_padding">
+    <div class="container">
+        <div class="heading_container">
+            <h2>Felhasználói oldal</h2>
+        </div>
+        <p class="lead">Csak bejelentkezett felhasználóknak.</p>
+    </div>
+</section>
 <%- include("partials/footer") %>

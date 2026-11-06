@@ -1,14 +1,61 @@
+<%
+    const menu = [
+        { href: "/", label: "Főoldal" },
+        { href: "/adatbazis", label: "Adatbázis" },
+        { href: "/kapcsolat", label: "Kapcsolat" }
+    ];
+    if (user) { menu.push({ href: "/user", label: "Felhasználó" }); }
+    if (user && user.role == "admin") { menu.push({ href: "/admin", label: "Admin" }); }
+%>
 <!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" href="/css/style.css">
-    </head>
-    <body>
-        <nav>
-            <a href="/">Home</a>
-            <% if(user){ %><a href="/user">User</a> <% } %>
-            <% if(user && user.role=="admin"){ %><a href="/admin">Admin</a> <% } %>
-            <% if(!user){ %><a href="/login">Login</a> <a href="/register">Register</a> <% }else{ %>
-            <%= user.username %> <a href="/logout">Logout</a> <% } %>
-        </nav>
-        <hr>
+<html lang="hu">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Net pizzéria – éjjel-nappal nyitva tartó SMS-es pizzarendelés">
+    <meta name="author" content="Lőrik Levente, Fődi Kinga">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/png">
+    <title><%= typeof title !== "undefined" ? title + " | " : "" %>Net pizzéria</title>
+
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/feane.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body class="sub_page">
+    <div class="hero_area">
+        <div class="bg-box">
+            <img src="/images/hero-bg.jpg" alt="">
+        </div>
+        <header class="header_section">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg custom_nav-container">
+                    <a class="navbar-brand" href="/"><span>Net pizzéria</span></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Menü">
+                        <span class=""></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="mainNav">
+                        <ul class="navbar-nav mx-auto">
+                            <% menu.forEach(item => { %>
+                                <li class="nav-item <%= currentPath === item.href ? "active" : "" %>">
+                                    <a class="nav-link" href="<%= item.href %>"><%= item.label %></a>
+                                </li>
+                            <% }) %>
+                        </ul>
+                        <div class="user_option">
+                            <% if (!user) { %>
+                                <a class="user_link" href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Bejelentkezés</a>
+                                <a class="order_online" href="/register">Regisztráció</a>
+                            <% } else { %>
+                                <span class="user_link"><i class="fa fa-user" aria-hidden="true"></i> <%= user.username %></span>
+                                <a class="order_online" href="/logout">Kijelentkezés</a>
+                            <% } %>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+    </div>
+    <main>
