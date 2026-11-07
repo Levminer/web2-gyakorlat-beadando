@@ -4,8 +4,14 @@
         { href: "/adatbazis", label: "Adatbázis" },
         { href: "/kapcsolat", label: "Kapcsolat" }
     ];
-    if (user) { menu.push({ href: "/user", label: "Felhasználó" }); }
-    if (user && user.role == "admin") { menu.push({ href: "/admin", label: "Admin" }); }
+    if (user) {
+        menu.push({ href: "/uzenetek", label: "Üzenetek" });
+        menu.push({ href: "/diagram", label: "Diagram" });
+    }
+    if (user && user.role === "admin") {
+        menu.push({ href: "/crud", label: "CRUD" });
+    }
+    const roleLabel = user ? (user.role === "admin" ? "admin" : "regisztrált") : "";
 %>
 <!DOCTYPE html>
 <html lang="hu">
@@ -49,7 +55,7 @@
                                 <a class="user_link" href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Bejelentkezés</a>
                                 <a class="order_online" href="/register">Regisztráció</a>
                             <% } else { %>
-                                <span class="user_link"><i class="fa fa-user" aria-hidden="true"></i> <%= user.username %></span>
+                                <span class="user_link"><i class="fa <%= user.role === "admin" ? "fa-user-secret" : "fa-user" %>" aria-hidden="true"></i> <%= user.username %> <small class="role_badge"><%= roleLabel %></small></span>
                                 <a class="order_online" href="/logout">Kijelentkezés</a>
                             <% } %>
                         </div>
@@ -59,3 +65,11 @@
         </header>
     </div>
     <main>
+        <% if (message) { %>
+            <div class="container flash_container">
+                <div class="alert alert-<%= messageType %> alert-dismissible fade show" role="alert">
+                    <%= message %>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Bezárás"><span aria-hidden="true">&times;</span></button>
+                </div>
+            </div>
+        <% } %>

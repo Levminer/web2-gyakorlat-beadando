@@ -21,3 +21,13 @@ npm run dev
 ```
 
 Az alkalmazás a http://localhost:3000 címen érhető el.
+
+## Szerepkörök
+
+| Szerepkör | Elérhető menük |
+|-----------|----------------|
+| Látogató | Főoldal, Adatbázis, Kapcsolat, Bejelentkezés, Regisztráció |
+| Regisztrált látogató (`user`) | + Üzenetek, Diagram, Kijelentkezés |
+| Admin (`admin`) | + CRUD |
+
+Admin felhasználó létrehozása: töltsd ki az `ADMIN_USERNAME` / `ADMIN_PASSWORD` értékét a `.env`-ben, majd futtasd: `npm run seed:admin`.

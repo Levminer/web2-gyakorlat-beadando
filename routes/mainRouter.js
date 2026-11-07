@@ -1,21 +1,20 @@
 const router = require("express").Router();
 const controller = require("../controllers/mainController");
-
-isLoggedIn=(req,res,next)=>{
-    if(req.session.user){return next();}
-    res.redirect("/login");
-}
-isAdmin=(req,res,next)=>{
-    if(req.session.user && req.session.user.role==="admin"){return next();}
-    res.redirect("/");
-}
+const { isLoggedIn, isAdmin, isGuest } = require("../middleware/auth");
 
 router.get("/", controller.homeIndex);
-router.get("/register", controller.registerGet);
-router.post("/register", controller.registerPost);
-router.get("/login", controller.loginGet);
-router.post("/login", controller.loginPost);
+
+router.get("/register", isGuest, controller.registerGet);
+router.post("/register", isGuest, controller.registerPost);
+router.get("/login", isGuest, controller.loginGet);
+router.post("/login", isGuest, controller.loginPost);
 router.get("/logout", controller.logout);
-router.get("/user", isLoggedIn, controller.userIndex);
-router.get("/admin", isAdmin, controller.adminIndex);
+
+// Regisztrált látogató
+router.get("/uzenetek", isLoggedIn, controller.messagesIndex);
+router.get("/diagram", isLoggedIn, controller.chartIndex);
+
+// Admin
+router.get("/crud", isAdmin, controller.crudIndex);
+
 module.exports = router;
