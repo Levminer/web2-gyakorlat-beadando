@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "node --watch app.js",
-    "seed:admin": "node seed/admin.js"
+    "seed": "node seed/seed.js"
   },
   "repository": {
     "type": "git",

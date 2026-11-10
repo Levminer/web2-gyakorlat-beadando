@@ -30,4 +30,18 @@ Az alkalmazás a http://localhost:3000 címen érhető el.
 | Regisztrált látogató (`user`) | + Üzenetek, Diagram, Kijelentkezés |
 | Admin (`admin`) | + CRUD |
 
-Admin felhasználó létrehozása: töltsd ki az `ADMIN_USERNAME` / `ADMIN_PASSWORD` értékét a `.env`-ben, majd futtasd: `npm run seed:admin`.
+Admin felhasználó létrehozása: töltsd ki az `ADMIN_USERNAME` / `ADMIN_PASSWORD` értékét a `.env`-ben, majd futtasd: `npm run seed` (lásd lent).
+
+## Adatbázis betöltése
+
+A `data/` mappa a „1-17-Pizza” adatbázis tabulátorral tagolt fájljait tartalmazza. Betöltés MongoDB-be (a három collection tartalmát lecseréli, és ha az `ADMIN_PASSWORD` meg van adva, létrehozza / frissíti az admin felhasználót is):
+
+```bash
+npm run seed
+```
+
+| Collection | Modell | Mezők | Kapcsolat |
+|------------|--------|-------|-----------|
+| `kategoriak` | `Kategoria` | nev, ar | – |
+| `pizzak` | `Pizza` | nev, kategorianev, vegetarianus | `kategorianev` → `Kategoria.nev` |
+| `rendelesek` | `Rendeles` | az, pizzanev, darab, felvetel, kiszallitas | `pizzanev` → `Pizza.nev` |
