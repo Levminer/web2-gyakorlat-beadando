@@ -1,10 +1,112 @@
-<%- include("partials/header", { title: "Főoldal" }) %>
-<section class="page_section layout_padding">
+<%- include("partials/header", { title: "Főoldal", hero: true }) %>
+
+<section class="stat_section">
     <div class="container">
-        <div class="heading_container">
-            <h2>Net pizzéria</h2>
+        <div class="row text-center">
+            <div class="col-6 col-md-3 stat_box">
+                <i class="fa fa-cutlery" aria-hidden="true"></i>
+                <h3><%= stat.pizzak %></h3>
+                <p>féle pizza</p>
+            </div>
+            <div class="col-6 col-md-3 stat_box">
+                <i class="fa fa-leaf" aria-hidden="true"></i>
+                <h3><%= stat.vegetarianus %></h3>
+                <p>vegetáriánus</p>
+            </div>
+            <div class="col-6 col-md-3 stat_box">
+                <i class="fa fa-mobile" aria-hidden="true"></i>
+                <h3><%= formatNumber(stat.rendelesek) %></h3>
+                <p>SMS-rendelés</p>
+            </div>
+            <div class="col-6 col-md-3 stat_box">
+                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                <h3><%= stat.atlagSzallitas %> perc</h3>
+                <p>átlagos kiszállítás</p>
+            </div>
         </div>
-        <p class="lead">Éjjel-nappal nyitva tartó pizzéria óriási választékkal – rendelés egyetlen SMS-ben.</p>
     </div>
 </section>
+
+<section class="food_section layout_padding" id="kategoriak">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>Kategóriák és árak</h2>
+            <p>Minden pizza ára a kategóriájától függ.</p>
+        </div>
+        <div class="row category_row">
+            <% kategoriak.forEach(k => { %>
+                <div class="col-6 col-lg-3">
+                    <a class="category_box" href="/adatbazis?kategoria=<%= encodeURIComponent(k.nev) %>">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <h4><%= k.nev %></h4>
+                        <h5><%= formatFt(k.ar) %></h5>
+                        <p><%= k.pizzak %> féle pizza</p>
+                    </a>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<section class="food_section layout_padding-bottom">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>Vendégeink kedvencei</h2>
+            <p>A legtöbbször rendelt pizzáink.</p>
+        </div>
+        <div class="row">
+            <% kedvencek.forEach((p, i) => { %>
+                <div class="col-sm-6 col-lg-4">
+                    <div class="box">
+                        <div>
+                            <div class="img-box">
+                                <img src="/images/pizza<%= (i % 3) + 1 %>.png" alt="<%= p.nev %> pizza">
+                            </div>
+                            <div class="detail-box">
+                                <h5><%= p.nev %></h5>
+                                <p>
+                                    <span class="badge badge-warning"><%= p.kategorianev %></span>
+                                    <% if (p.vegetarianus) { %><span class="badge badge-success">vegetáriánus</span><% } %>
+                                    <br><%= formatNumber(p.rendeltDarab) %> darabot rendeltek eddig
+                                </p>
+                                <div class="options">
+                                    <h6><%= formatFt(p.ar) %></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        <div class="btn-box">
+            <a href="/adatbazis">Teljes kínálat</a>
+        </div>
+    </div>
+</section>
+
+<section class="about_section layout_padding" id="rendeles">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="img-box">
+                    <img src="/images/about-pizza.jpg" alt="Szeletelt pizza">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="detail-box">
+                    <div class="heading_container">
+                        <h2>Hogyan rendeljek?</h2>
+                    </div>
+                    <ol class="order_steps">
+                        <li><strong>Válasszon pizzát</strong> az <a class="text_link" href="/adatbazis">Adatbázis</a> menüben.</li>
+                        <li><strong>Küldjön SMS-t</strong> a pizza nevével és a darabszámmal – egy SMS-ben egyféle pizza rendelhető.</li>
+                        <li><strong>Várja a futárt!</strong> Éjjel-nappal szállítunk, átlagosan <%= stat.atlagSzallitas %> perc alatt.</li>
+                    </ol>
+                    <p>Eddig összesen <%= formatNumber(stat.eladottPizza) %> pizzát szállítottunk ki. Kérdése van? Írjon nekünk a <a class="text_link" href="/kapcsolat">Kapcsolat</a> oldalon!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <%- include("partials/footer") %>

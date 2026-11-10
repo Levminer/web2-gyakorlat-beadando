@@ -58,3 +58,143 @@
 .flash_container {
     margin-top: 30px;
 }
+
+/* Főoldal */
+
+.stat_section {
+    background-color: #ffbe33;
+    color: #222831;
+    padding: 30px 0 10px;
+}
+
+.stat_section .stat_box i {
+    font-size: 28px;
+}
+
+.stat_section .stat_box h3 {
+    font-weight: bold;
+    margin: 8px 0 0;
+}
+
+.category_row {
+    margin-top: 15px;
+}
+
+.category_box {
+    display: block;
+    text-align: center;
+    background-color: #222831;
+    color: #ffffff;
+    border-radius: 15px;
+    padding: 25px 15px;
+    margin-top: 25px;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.category_box:hover {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #2d3440;
+    transform: translateY(-5px);
+}
+
+.category_box i {
+    color: #ffbe33;
+    font-size: 24px;
+}
+
+.category_box h4 {
+    text-transform: capitalize;
+    margin: 10px 0 5px;
+}
+
+.category_box h5 {
+    color: #ffbe33;
+    font-weight: bold;
+}
+
+.category_box p {
+    margin: 0;
+    opacity: 0.8;
+}
+
+.food_section .box .detail-box .badge {
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+}
+
+.about_section .order_steps {
+    padding-left: 20px;
+    margin: 20px 0;
+}
+
+.about_section .order_steps li {
+    margin-bottom: 10px;
+}
+
+.about_section .img-box img {
+    border-radius: 50%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+}
+
+.about_section .detail-box a.text_link {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border-radius: 0;
+    color: #ffbe33;
+    text-decoration: underline;
+}
+
+/* Adatbázis */
+
+.section_title {
+    font-family: 'Dancing Script', cursive;
+    font-weight: bold;
+    margin: 40px 0 15px;
+}
+
+.data_table {
+    font-size: 0.95rem;
+}
+
+.data_table td a {
+    color: #222831;
+    font-weight: 600;
+}
+
+.data_table td a:hover {
+    color: #e69c00;
+}
+
+.filter_form {
+    margin-bottom: 10px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #ffbe33;
+    border-color: #ffbe33;
+    color: #222831;
+}
+
+.pagination .page-link {
+    color: #222831;
+}
+
+/* Fejléc háttérkép (pizza) sötétítése, hogy a fehér szöveg olvasható legyen */
+
+.hero_area .bg-box::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(20, 24, 30, 0.88) 0%, rgba(20, 24, 30, 0.6) 55%, rgba(20, 24, 30, 0.35) 100%);
+}
+
+.sub_page .hero_area .bg-box::after {
+    background: rgba(20, 24, 30, 0.75);
+}
+
+.hero_area .bg-box img {
+    object-position: center;
+}

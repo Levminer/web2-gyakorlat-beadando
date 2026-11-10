@@ -6,6 +6,7 @@ Az adatbázis a „1-17-Pizza” (kategoria, pizza, rendeles táblák).
 Kiindulópont: a gyakorlat *07b-Autentikáció* megoldása.
 
 Reszponzív téma: [Feane](https://themewagon.com/themes/feane/) (ThemeWagon / Free Html Templates, Bootstrap 4).
+Fotók: [Unsplash](https://unsplash.com) (szabadon felhasználható, Unsplash License).
 
 ## Készítők
 

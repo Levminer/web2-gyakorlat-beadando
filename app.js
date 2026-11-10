@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const app = express();
 connectDB();
 app.set("view engine", "ejs");
+Object.assign(app.locals, require("./helpers/format"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(session({

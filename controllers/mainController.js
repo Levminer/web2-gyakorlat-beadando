@@ -6,7 +6,6 @@ const flash = (req, type, text) => {
     req.session.message = text;
 };
 
-exports.homeIndex = (req, res) => { res.render("home"); };
 exports.messagesIndex = (req, res) => { res.render("uzenetek"); };
 exports.chartIndex = (req, res) => { res.render("diagram"); };
 exports.crudIndex = (req, res) => { res.render("crud"); };

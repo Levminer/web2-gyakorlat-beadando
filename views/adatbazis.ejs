@@ -1,0 +1,175 @@
+<%- include("partials/header", { title: "Adatbázis" }) %>
+<%
+    // lekérdezési paraméterek összeállítása a szűrők és a lapozás megtartásához
+    const query = (changes) => {
+        const params = new URLSearchParams();
+        const values = {
+            kategoria: szuro.kategoria,
+            vega: szuro.csakVega ? "1" : "",
+            rendezes: szuro.rendezes !== "nev" ? szuro.rendezes : "",
+            pizza: rendelesPizza,
+            oldal: lapozas.oldal > 1 ? lapozas.oldal : "",
+            ...changes
+        };
+        Object.entries(values).forEach(([k, v]) => { if (v) { params.set(k, v); } });
+        const s = params.toString();
+        return s ? "?" + s : "?";
+    };
+    const firstPage = Math.max(1, lapozas.oldal - 2);
+    const lastPage = Math.min(lapozas.oldalakSzama, lapozas.oldal + 2);
+%>
+
+<section class="page_section layout_padding">
+    <div class="container">
+        <div class="heading_container">
+            <h2>Adatbázis</h2>
+        </div>
+        <p class="lead">A Net pizzéria kínálata és rendelései a <em>kategoria</em>, <em>pizza</em> és <em>rendeles</em> táblák alapján.</p>
+
+        <h3 class="section_title">Kategóriák</h3>
+        <div class="table-responsive">
+            <table class="table table-striped data_table">
+                <thead class="thead-dark">
+                    <tr><th>Kategória</th><th class="text-right">Ár</th><th class="text-right">Pizzák száma</th></tr>
+                </thead>
+                <tbody>
+                    <% kategoriak.forEach(k => { %>
+                        <tr>
+                            <td><a href="<%= query({ kategoria: k.nev, oldal: "" }) %>#pizzak"><%= k.nev %></a></td>
+                            <td class="text-right"><%= formatFt(k.ar) %></td>
+                            <td class="text-right"><%= k.pizzak %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="section_title" id="pizzak">Pizzák</h3>
+        <form class="form-inline filter_form" method="GET" action="/adatbazis#pizzak">
+            <label class="mr-2" for="kategoria">Kategória:</label>
+            <select class="form-control mr-3 mb-2" id="kategoria" name="kategoria">
+                <option value="">mind</option>
+                <% kategoriak.forEach(k => { %>
+                    <option value="<%= k.nev %>" <%= szuro.kategoria === k.nev ? "selected" : "" %>><%= k.nev %></option>
+                <% }) %>
+            </select>
+            <label class="mr-2" for="rendezes">Rendezés:</label>
+            <select class="form-control mr-3 mb-2" id="rendezes" name="rendezes">
+                <option value="nev" <%= szuro.rendezes === "nev" ? "selected" : "" %>>név</option>
+                <option value="ar" <%= szuro.rendezes === "ar" ? "selected" : "" %>>ár</option>
+                <option value="rendelt" <%= szuro.rendezes === "rendelt" ? "selected" : "" %>>népszerűség</option>
+            </select>
+            <div class="form-check mr-3 mb-2">
+                <input class="form-check-input" type="checkbox" id="vega" name="vega" value="1" <%= szuro.csakVega ? "checked" : "" %>>
+                <label class="form-check-label" for="vega">csak vegetáriánus</label>
+            </div>
+            <% if (rendelesPizza) { %><input type="hidden" name="pizza" value="<%= rendelesPizza %>"><% } %>
+            <button type="submit" class="btn btn-warning mb-2">Szűrés</button>
+            <a class="btn btn-link mb-2" href="/adatbazis#pizzak">Alaphelyzet</a>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover data_table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Pizza</th>
+                        <th>Kategória</th>
+                        <th class="text-right">Ár</th>
+                        <th class="text-center">Vegetáriánus</th>
+                        <th class="text-right">Rendelések</th>
+                        <th class="text-right">Eladott darab</th>
+                        <th class="text-right">Bevétel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% pizzak.forEach(p => { %>
+                        <tr>
+                            <td><a href="<%= query({ pizza: p.nev, oldal: "" }) %>#rendelesek"><%= p.nev %></a></td>
+                            <td><%= p.kategorianev %></td>
+                            <td class="text-right"><%= formatFt(p.ar) %></td>
+                            <td class="text-center"><% if (p.vegetarianus) { %><i class="fa fa-leaf text-success" title="vegetáriánus"></i><% } else { %>–<% } %></td>
+                            <td class="text-right"><%= formatNumber(p.rendelesekSzama) %></td>
+                            <td class="text-right"><%= formatNumber(p.rendeltDarab) %></td>
+                            <td class="text-right"><%= formatFt(p.bevetel) %></td>
+                        </tr>
+                    <% }) %>
+                    <% if (!pizzak.length) { %>
+                        <tr><td colspan="7" class="text-center">Nincs a szűrésnek megfelelő pizza.</td></tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-muted"><%= pizzak.length %> pizza</p>
+
+        <h3 class="section_title" id="rendelesek">Rendelések</h3>
+        <form class="form-inline filter_form" method="GET" action="/adatbazis#rendelesek">
+            <label class="mr-2" for="pizza">Pizza:</label>
+            <select class="form-control mr-3 mb-2" id="pizza" name="pizza">
+                <option value="">mind</option>
+                <% pizzaNevek.forEach(nev => { %>
+                    <option value="<%= nev %>" <%= rendelesPizza === nev ? "selected" : "" %>><%= nev %></option>
+                <% }) %>
+            </select>
+            <% if (szuro.kategoria) { %><input type="hidden" name="kategoria" value="<%= szuro.kategoria %>"><% } %>
+            <% if (szuro.csakVega) { %><input type="hidden" name="vega" value="1"><% } %>
+            <% if (szuro.rendezes !== "nev") { %><input type="hidden" name="rendezes" value="<%= szuro.rendezes %>"><% } %>
+            <button type="submit" class="btn btn-warning mb-2">Szűrés</button>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm data_table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="text-right">Az.</th>
+                        <th>Pizza</th>
+                        <th>Kategória</th>
+                        <th class="text-right">Darab</th>
+                        <th>Felvétel</th>
+                        <th>Kiszállítás</th>
+                        <th class="text-right">Szállítási idő</th>
+                        <th class="text-right">Érték</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% rendelesek.forEach(r => {
+                        const ar = r.pizza && r.pizza.kategoria ? r.pizza.kategoria.ar : 0;
+                        const perc = minutesBetween(r.felvetel, r.kiszallitas); %>
+                        <tr>
+                            <td class="text-right"><%= r.az %></td>
+                            <td><%= r.pizzanev %></td>
+                            <td><%= r.pizza ? r.pizza.kategorianev : "–" %></td>
+                            <td class="text-right"><%= r.darab %></td>
+                            <td><%= formatDate(r.felvetel) %></td>
+                            <td><%= formatDate(r.kiszallitas) %></td>
+                            <td class="text-right"><%= perc !== null ? perc + " perc" : "–" %></td>
+                            <td class="text-right"><%= formatFt(r.darab * ar) %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+        <nav aria-label="Rendelések lapozása" class="d-flex flex-wrap justify-content-between align-items-center">
+            <p class="text-muted mb-2"><%= formatNumber(lapozas.osszes) %> rendelés · <%= lapozas.oldal %>. / <%= lapozas.oldalakSzama %> oldal</p>
+            <ul class="pagination flex-wrap mb-2">
+                <li class="page-item <%= lapozas.oldal === 1 ? "disabled" : "" %>">
+                    <a class="page-link" href="<%= query({ oldal: 1 }) %>#rendelesek" aria-label="Első">&laquo;</a>
+                </li>
+                <li class="page-item <%= lapozas.oldal === 1 ? "disabled" : "" %>">
+                    <a class="page-link" href="<%= query({ oldal: lapozas.oldal - 1 }) %>#rendelesek" aria-label="Előző">&lsaquo;</a>
+                </li>
+                <% for (let i = firstPage; i <= lastPage; i++) { %>
+                    <li class="page-item <%= i === lapozas.oldal ? "active" : "" %>">
+                        <a class="page-link" href="<%= query({ oldal: i }) %>#rendelesek"><%= i %></a>
+                    </li>
+                <% } %>
+                <li class="page-item <%= lapozas.oldal === lapozas.oldalakSzama ? "disabled" : "" %>">
+                    <a class="page-link" href="<%= query({ oldal: lapozas.oldal + 1 }) %>#rendelesek" aria-label="Következő">&rsaquo;</a>
+                </li>
+                <li class="page-item <%= lapozas.oldal === lapozas.oldalakSzama ? "disabled" : "" %>">
+                    <a class="page-link" href="<%= query({ oldal: lapozas.oldalakSzama }) %>#rendelesek" aria-label="Utolsó">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<%- include("partials/footer") %>
