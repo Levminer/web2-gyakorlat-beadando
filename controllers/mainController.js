@@ -6,7 +6,6 @@ const flash = (req, type, text) => {
     req.session.message = text;
 };
 
-exports.chartIndex = (req, res) => { res.render("diagram"); };
 
 exports.registerGet = (req, res) => { res.render("register"); };
 exports.registerPost = async (req, res) => {

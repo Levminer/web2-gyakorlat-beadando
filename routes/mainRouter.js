@@ -3,6 +3,7 @@ const controller = require("../controllers/mainController");
 const pizzaController = require("../controllers/pizzaController");
 const messageController = require("../controllers/messageController");
 const crudController = require("../controllers/crudController");
+const chartController = require("../controllers/chartController");
 const { isLoggedIn, isAdmin, isGuest } = require("../middleware/auth");
 
 router.get("/", pizzaController.home);
@@ -18,7 +19,7 @@ router.get("/logout", controller.logout);
 
 // Regisztrált látogató
 router.get("/uzenetek", isLoggedIn, messageController.index);
-router.get("/diagram", isLoggedIn, controller.chartIndex);
+router.get("/diagram", isLoggedIn, chartController.index);
 
 // Admin: pizzák kezelése
 router.get("/crud", isAdmin, crudController.index);

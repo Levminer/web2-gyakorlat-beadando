@@ -12,7 +12,10 @@ const dateTimeFormatter = new Intl.DateTimeFormat("hu-HU", {
     hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "Europe/Budapest"
 });
 
+const dayFormatter = new Intl.DateTimeFormat("hu-HU", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+
 exports.formatDate = (date) => (date ? dateFormatter.format(new Date(date)) : "–");
+exports.formatDay = (date) => (date ? dayFormatter.format(new Date(date)) : "–");
 exports.formatDateTime = (date) => (date ? dateTimeFormatter.format(new Date(date)) : "–");
 exports.formatNumber = (n) => new Intl.NumberFormat("hu-HU").format(n || 0);
 exports.formatFt = (n) => `${exports.formatNumber(n)} Ft`;

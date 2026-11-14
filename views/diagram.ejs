@@ -1,10 +1,129 @@
 <%- include("partials/header", { title: "Diagram" }) %>
-<section class="page_section layout_padding">
+<%
+    const osszeg = (tomb) => tomb.reduce((a, b) => a + b, 0);
+    const kat = adatok.kategoriak;
+    const haviOssz = adatok.havi.honapok.map((_, i) => osszeg(kat.map(k => adatok.havi.kategoriank[k][i])));
+    const oraOssz = Array.from({ length: 24 }, (_, i) => osszeg(kat.map(k => adatok.orak.kategoriank[k][i])));
+%>
+<section class="page_section layout_padding chart_page">
     <div class="container">
         <div class="heading_container">
             <h2>Diagram</h2>
         </div>
-        <p class="lead">Rendelési statisztikák – csak bejelentkezett felhasználóknak.</p>
+        <p class="lead">
+            A Net pizzéria rendelései
+            <% if (idoszak) { %><%= formatDay(idoszak.elso) %> és <%= formatDay(idoszak.utolso) %> között<% } %>.
+            Vigye az egeret egy oszlop vagy pont fölé a pontos értékért; minden diagram alatt táblázatban is megtalálja az adatokat.
+        </p>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <figure class="chart_card">
+                    <figcaption>
+                        <h4>Bevétel kategóriánként</h4>
+                        <p>Eladott darab × kategóriaár, forintban</p>
+                    </figcaption>
+                    <div class="chart_box"><canvas id="bevetelChart" role="img" aria-label="Oszlopdiagram: bevétel kategóriánként"></canvas></div>
+                    <details>
+                        <summary>Táblázat</summary>
+                        <div class="table-responsive">
+                            <table class="table table-sm data_table mb-0">
+                                <thead><tr><th>Kategória</th><th class="text-right">Ár</th><th class="text-right">Eladott darab</th><th class="text-right">Bevétel</th></tr></thead>
+                                <tbody>
+                                    <% adatok.bevetel.forEach(r => { %>
+                                        <tr><td><%= r.kategoria %></td><td class="text-right"><%= formatFt(r.ar) %></td><td class="text-right"><%= formatNumber(r.darab) %></td><td class="text-right"><%= formatFt(r.bevetel) %></td></tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
+                </figure>
+            </div>
+            <div class="col-lg-6">
+                <figure class="chart_card">
+                    <figcaption>
+                        <h4>Vegetáriánus és egyéb pizzák</h4>
+                        <p>Eladott darab kategóriánként</p>
+                    </figcaption>
+                    <div class="chart_box"><canvas id="vegaChart" role="img" aria-label="Halmozott sávdiagram: vegetáriánus és egyéb pizzák eladott darabszáma kategóriánként"></canvas></div>
+                    <details>
+                        <summary>Táblázat</summary>
+                        <div class="table-responsive">
+                            <table class="table table-sm data_table mb-0">
+                                <thead><tr><th>Kategória</th><th class="text-right">Vegetáriánus</th><th class="text-right">Egyéb</th><th class="text-right">Vega arány</th></tr></thead>
+                                <tbody>
+                                    <% adatok.vega.forEach(r => { const ossz = r.vegetarianus + r.egyeb; %>
+                                        <tr><td><%= r.kategoria %></td><td class="text-right"><%= formatNumber(r.vegetarianus) %></td><td class="text-right"><%= formatNumber(r.egyeb) %></td><td class="text-right"><%= ossz ? Math.round(r.vegetarianus / ossz * 100) : 0 %>%</td></tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
+                </figure>
+            </div>
+        </div>
+
+        <form class="form-inline filter_form chart_filter" onsubmit="return false">
+            <label class="mr-2" for="kategoriaSzuro">Rendelések kategória szerint:</label>
+            <select class="form-control mb-2" id="kategoriaSzuro">
+                <option value="">minden kategória</option>
+                <% kat.forEach(k => { %><option value="<%= k %>"><%= k %></option><% }) %>
+            </select>
+        </form>
+
+        <figure class="chart_card">
+            <figcaption>
+                <h4>Rendelések havonta</h4>
+                <p>A rendelések (SMS-ek) száma; a szaggatott szakasz a csak részben szereplő első és utolsó hónap.</p>
+            </figcaption>
+            <div class="chart_box chart_box_wide"><canvas id="haviChart" role="img" aria-label="Vonaldiagram: rendelések száma havonta"></canvas></div>
+            <details>
+                <summary>Táblázat</summary>
+                <div class="table-responsive">
+                    <table class="table table-sm data_table mb-0">
+                        <thead><tr><th>Hónap</th><% kat.forEach(k => { %><th class="text-right"><%= k %></th><% }) %><th class="text-right">Összesen</th></tr></thead>
+                        <tbody>
+                            <% adatok.havi.honapok.forEach((h, i) => { %>
+                                <tr>
+                                    <td><%= h.cimke %><% if (h.resz) { %> <small class="text-muted">(részleges)</small><% } %></td>
+                                    <% kat.forEach(k => { %><td class="text-right"><%= formatNumber(adatok.havi.kategoriank[k][i]) %></td><% }) %>
+                                    <td class="text-right"><strong><%= formatNumber(haviOssz[i]) %></strong></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        </figure>
+
+        <figure class="chart_card">
+            <figcaption>
+                <h4>Rendelések a nap óráiban</h4>
+                <p>A felvétel órája szerint – a pizzéria éjjel-nappal szinte egyenletes forgalommal dolgozik.</p>
+            </figcaption>
+            <div class="chart_box chart_box_wide"><canvas id="oraChart" role="img" aria-label="Oszlopdiagram: rendelések száma a nap óráiban"></canvas></div>
+            <details>
+                <summary>Táblázat</summary>
+                <div class="table-responsive">
+                    <table class="table table-sm data_table mb-0">
+                        <thead><tr><th>Óra</th><% kat.forEach(k => { %><th class="text-right"><%= k %></th><% }) %><th class="text-right">Összesen</th></tr></thead>
+                        <tbody>
+                            <% oraOssz.forEach((ossz, i) => { %>
+                                <tr>
+                                    <td><%= i %>:00–<%= i %>:59</td>
+                                    <% kat.forEach(k => { %><td class="text-right"><%= formatNumber(adatok.orak.kategoriank[k][i]) %></td><% }) %>
+                                    <td class="text-right"><strong><%= formatNumber(ossz) %></strong></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        </figure>
     </div>
 </section>
+
+<script id="diagramAdatok" type="application/json"><%- JSON.stringify(adatok).replace(/</g, "\\u003c") %></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<script src="/js/diagram.js"></script>
 <%- include("partials/footer") %>

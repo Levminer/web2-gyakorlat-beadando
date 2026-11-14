@@ -406,3 +406,71 @@
 .contact_form select.form-control.is-invalid {
     background-image: none;
 }
+
+/* Diagram */
+
+.chart_card {
+    background: #ffffff;
+    border: 1px solid rgba(34, 40, 49, 0.1);
+    border-radius: 10px;
+    padding: 20px 22px 14px;
+    margin: 0 0 30px;
+}
+
+.chart_card figcaption h4 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.chart_card figcaption p {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 14px;
+}
+
+.chart_box {
+    position: relative;
+    height: 300px;
+}
+
+.chart_box_wide {
+    height: 320px;
+}
+
+.chart_card details {
+    margin-top: 10px;
+    border-top: 1px solid #e9ecef;
+    padding-top: 8px;
+}
+
+.chart_card summary {
+    color: #495057;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.chart_card details .data_table {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.chart_filter {
+    margin-bottom: 18px;
+}
+
+.chart_filter label {
+    font-weight: 600;
+}
+
+@media (max-width: 575px) {
+    .chart_card {
+        padding: 16px 12px 10px;
+    }
+
+    .chart_box,
+    .chart_box_wide {
+        height: 260px;
+    }
+}
