@@ -55,7 +55,7 @@
                                 <a class="user_link" href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Bejelentkezés</a>
                                 <a class="order_online" href="/register">Regisztráció</a>
                             <% } else { %>
-                                <span class="user_link"><i class="fa <%= user.role === "admin" ? "fa-user-secret" : "fa-user" %>" aria-hidden="true"></i> <%= user.username %> <small class="role_badge"><%= roleLabel %></small></span>
+                                <span class="user_link" title="<%= user.username %> (<%= roleLabel %>)"><i class="fa <%= user.role === "admin" ? "fa-user-secret" : "fa-user" %>" aria-hidden="true"></i> <%= user.username %> <small class="role_badge"><%= roleLabel %></small></span>
                                 <a class="order_online" href="/logout">Kijelentkezés</a>
                             <% } %>
                         </div>

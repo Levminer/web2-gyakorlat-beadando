@@ -4,7 +4,45 @@
         <div class="heading_container">
             <h2>Üzenetek</h2>
         </div>
-        <p class="lead">A kapcsolat űrlapon küldött üzenetek – csak bejelentkezett felhasználóknak.</p>
+        <p class="lead">A <a class="text_link" href="/kapcsolat">Kapcsolat</a> űrlapon küldött üzenetek, a legfrissebb elöl.</p>
+
+        <% if (!uzenetek.length) { %>
+            <div class="message_empty">
+                <i class="fa fa-envelope-open-o" aria-hidden="true"></i>
+                <p>Még nem érkezett üzenet.</p>
+            </div>
+        <% } %>
+
+        <% uzenetek.forEach(u => { %>
+            <article class="message_card">
+                <header class="message_head">
+                    <h4><%= u.targy || "(nincs tárgy)" %></h4>
+                    <time datetime="<%= new Date(u.createdAt).toISOString() %>"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= formatDateTime(u.createdAt) %></time>
+                </header>
+                <p class="message_from">
+                    <i class="fa fa-user" aria-hidden="true"></i> <%= u.nev %>
+                    &lt;<a href="mailto:<%= u.email %>"><%= u.email %></a>&gt;
+                    <% if (u.felhasznalo) { %><span class="badge badge-warning"><%= u.felhasznalo %></span><% } else { %><span class="badge badge-secondary">vendég</span><% } %>
+                </p>
+                <p class="message_text"><%= u.szoveg %></p>
+            </article>
+        <% }) %>
+
+        <% if (lapozas.oldalakSzama > 1) { %>
+            <nav aria-label="Üzenetek lapozása" class="d-flex flex-wrap justify-content-between align-items-center">
+                <p class="text-muted mb-2"><%= formatNumber(lapozas.osszes) %> üzenet · <%= lapozas.oldal %>. / <%= lapozas.oldalakSzama %> oldal</p>
+                <ul class="pagination flex-wrap mb-2">
+                    <li class="page-item <%= lapozas.oldal === 1 ? "disabled" : "" %>">
+                        <a class="page-link" href="?oldal=<%= lapozas.oldal - 1 %>" aria-label="Újabbak">&lsaquo; Újabbak</a>
+                    </li>
+                    <li class="page-item <%= lapozas.oldal === lapozas.oldalakSzama ? "disabled" : "" %>">
+                        <a class="page-link" href="?oldal=<%= lapozas.oldal + 1 %>" aria-label="Régebbiek">Régebbiek &rsaquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        <% } else if (uzenetek.length) { %>
+            <p class="text-muted"><%= formatNumber(lapozas.osszes) %> üzenet</p>
+        <% } %>
     </div>
 </section>
 <%- include("partials/footer") %>

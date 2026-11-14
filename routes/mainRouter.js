@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const controller = require("../controllers/mainController");
 const pizzaController = require("../controllers/pizzaController");
+const messageController = require("../controllers/messageController");
 const { isLoggedIn, isAdmin, isGuest } = require("../middleware/auth");
 
 router.get("/", pizzaController.home);
@@ -13,7 +14,7 @@ router.post("/login", isGuest, controller.loginPost);
 router.get("/logout", controller.logout);
 
 // Regisztrált látogató
-router.get("/uzenetek", isLoggedIn, controller.messagesIndex);
+router.get("/uzenetek", isLoggedIn, messageController.index);
 router.get("/diagram", isLoggedIn, controller.chartIndex);
 
 // Admin

@@ -46,3 +46,10 @@ npm run seed
 | `kategoriak` | `Kategoria` | nev, ar | – |
 | `pizzak` | `Pizza` | nev, kategorianev, vegetarianus | `kategorianev` → `Kategoria.nev` |
 | `rendelesek` | `Rendeles` | az, pizzanev, darab, felvetel, kiszallitas | `pizzanev` → `Pizza.nev` |
+
+Az alkalmazás saját collectionjei:
+
+| Collection | Modell | Mezők | Megjegyzés |
+|------------|--------|-------|------------|
+| `users` | `User` | username, password (bcrypt hash), role | `user` / `admin` |
+| `uzenetek` | `Uzenet` | nev, email, targy, szoveg, felhasznalo, createdAt | a Kapcsolat űrlapon küldött üzenetek; az Üzenetek oldal (csak bejelentkezve) a legfrissebbet mutatja elöl, a küldés idejével |
