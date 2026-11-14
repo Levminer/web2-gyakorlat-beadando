@@ -1,0 +1,42 @@
+<%
+    const cim = pizza ? "Pizza módosítása" : "Új pizza";
+    const action = pizza ? `/crud/${pizza._id}/szerkesztes` : "/crud/uj";
+    const invalid = (mezo) => (hibak[mezo] ? "is-invalid" : "");
+%>
+<%- include("partials/header", { title: cim }) %>
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="auth_box crud_box">
+            <div class="heading_container">
+                <h2><%= cim %></h2>
+            </div>
+            <div class="form_container contact_form">
+                <form method="POST" action="<%= action %>" novalidate>
+                    <div class="form-group">
+                        <label for="nev">Név *</label>
+                        <input class="form-control <%= invalid("nev") %>" id="nev" name="nev" maxlength="40" value="<%= ertekek.nev %>">
+                        <% if (hibak.nev) { %><div class="invalid-feedback"><%= hibak.nev %></div><% } %>
+                        <% if (pizza) { %><small class="form-text text-muted">Átnevezéskor a pizza rendelései is az új nevet kapják.</small><% } %>
+                    </div>
+                    <div class="form-group">
+                        <label for="kategorianev">Kategória *</label>
+                        <select class="form-control <%= invalid("kategorianev") %>" id="kategorianev" name="kategorianev">
+                            <option value="">– válasszon –</option>
+                            <% kategoriak.forEach(k => { %>
+                                <option value="<%= k.nev %>" <%= ertekek.kategorianev === k.nev ? "selected" : "" %>><%= k.nev %> (<%= formatFt(k.ar) %>)</option>
+                            <% }) %>
+                        </select>
+                        <% if (hibak.kategorianev) { %><div class="invalid-feedback"><%= hibak.kategorianev %></div><% } %>
+                    </div>
+                    <div class="form-group form-check">
+                        <input class="form-check-input" type="checkbox" id="vegetarianus" name="vegetarianus" value="1" <%= ertekek.vegetarianus ? "checked" : "" %>>
+                        <label class="form-check-label" for="vegetarianus">Vegetáriánus</label>
+                    </div>
+                    <button type="submit"><%= pizza ? "Mentés" : "Létrehozás" %></button>
+                    <a class="btn btn-link mt-3" href="/crud">Mégse</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<%- include("partials/footer") %>

@@ -1,0 +1,30 @@
+<%- include("partials/header", { title: "Pizza törlése" }) %>
+<section class="page_section layout_padding">
+    <div class="container">
+        <div class="auth_box crud_box">
+            <div class="heading_container">
+                <h2>Pizza törlése</h2>
+            </div>
+            <div class="delete_box">
+                <p class="mb-2">Biztosan törli a következő pizzát?</p>
+                <h4><%= pizza.nev %></h4>
+                <p>
+                    <span class="badge badge-warning"><%= pizza.kategorianev %></span>
+                    <% if (pizza.kategoria) { %><%= formatFt(pizza.kategoria.ar) %><% } %>
+                    <% if (pizza.vegetarianus) { %><span class="badge badge-success">vegetáriánus</span><% } %>
+                </p>
+                <% if (rendelesek) { %>
+                    <div class="alert alert-warning">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        A pizzához <strong><%= formatNumber(rendelesek) %> rendelés</strong> tartozik, ezek is törlődnek.
+                    </div>
+                <% } %>
+                <form method="POST" action="/crud/<%= pizza._id %>/torles" class="d-flex flex-wrap align-items-center">
+                    <button type="submit" class="btn btn-danger mr-3"><i class="fa fa-trash" aria-hidden="true"></i> Törlés</button>
+                    <a class="btn btn-link" href="/crud">Mégse</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<%- include("partials/footer") %>

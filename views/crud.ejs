@@ -4,7 +4,58 @@
         <div class="heading_container">
             <h2>Pizzák kezelése</h2>
         </div>
-        <p class="lead">Pizzák létrehozása, módosítása és törlése – csak adminnak.</p>
+        <p class="lead">Pizzák létrehozása, módosítása és törlése. Az ár a kategóriából adódik.</p>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-start">
+            <form class="form-inline filter_form" method="GET" action="/crud">
+                <label class="sr-only" for="q">Keresés</label>
+                <input class="form-control mr-2 mb-2" type="search" id="q" name="q" placeholder="Pizza neve…" value="<%= szuro.kereses %>">
+                <label class="sr-only" for="kategoria">Kategória</label>
+                <select class="form-control mr-2 mb-2" id="kategoria" name="kategoria">
+                    <option value="">minden kategória</option>
+                    <% kategoriak.forEach(k => { %>
+                        <option value="<%= k.nev %>" <%= szuro.kategoria === k.nev ? "selected" : "" %>><%= k.nev %></option>
+                    <% }) %>
+                </select>
+                <button type="submit" class="btn btn-warning mb-2 mr-2">Szűrés</button>
+                <% if (szuro.kereses || szuro.kategoria) { %><a class="btn btn-link mb-2" href="/crud">Alaphelyzet</a><% } %>
+            </form>
+            <a class="btn btn-dark mb-2" href="/crud/uj"><i class="fa fa-plus" aria-hidden="true"></i> Új pizza</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover data_table crud_table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Pizza</th>
+                        <th>Kategória</th>
+                        <th class="text-right">Ár</th>
+                        <th class="text-center">Vegetáriánus</th>
+                        <th class="text-right">Rendelések</th>
+                        <th class="text-right">Műveletek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% pizzak.forEach(p => { %>
+                        <tr>
+                            <td><strong><%= p.nev %></strong></td>
+                            <td><%= p.kategorianev %></td>
+                            <td class="text-right text-nowrap"><%= p.kategoria ? formatFt(p.kategoria.ar) : "–" %></td>
+                            <td class="text-center"><% if (p.vegetarianus) { %><i class="fa fa-leaf text-success" title="vegetáriánus"></i><% } else { %>–<% } %></td>
+                            <td class="text-right"><%= formatNumber(rendelesSzam.get(p.nev)) %></td>
+                            <td class="text-right text-nowrap">
+                                <a class="btn btn-sm btn-outline-dark" href="/crud/<%= p._id %>/szerkesztes" title="Módosítás"><i class="fa fa-pencil" aria-hidden="true"></i> Módosítás</a>
+                                <a class="btn btn-sm btn-outline-danger" href="/crud/<%= p._id %>/torles" title="Törlés"><i class="fa fa-trash" aria-hidden="true"></i> Törlés</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                    <% if (!pizzak.length) { %>
+                        <tr><td colspan="6" class="text-center">Nincs a szűrésnek megfelelő pizza.</td></tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-muted"><%= pizzak.length %> / <%= osszes %> pizza</p>
     </div>
 </section>
 <%- include("partials/footer") %>

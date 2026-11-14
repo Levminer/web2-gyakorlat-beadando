@@ -45,7 +45,7 @@
                     <div class="collapse navbar-collapse" id="mainNav">
                         <ul class="navbar-nav mx-auto">
                             <% menu.forEach(item => { %>
-                                <li class="nav-item <%= currentPath === item.href ? "active" : "" %>">
+                                <li class="nav-item <%= currentPath === item.href || currentPath.startsWith(item.href + "/") ? "active" : "" %>">
                                     <a class="nav-link" href="<%= item.href %>"><%= item.label %></a>
                                 </li>
                             <% }) %>

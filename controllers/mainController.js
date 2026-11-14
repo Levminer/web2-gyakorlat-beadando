@@ -7,7 +7,6 @@ const flash = (req, type, text) => {
 };
 
 exports.chartIndex = (req, res) => { res.render("diagram"); };
-exports.crudIndex = (req, res) => { res.render("crud"); };
 
 exports.registerGet = (req, res) => { res.render("register"); };
 exports.registerPost = async (req, res) => {

@@ -31,6 +31,8 @@ Az alkalmazás a http://localhost:3000 címen érhető el.
 | Regisztrált látogató (`user`) | + Üzenetek, Diagram, Kijelentkezés |
 | Admin (`admin`) | + CRUD |
 
+A CRUD menüben az admin pizzákat hozhat létre, módosíthat és törölhet (kategória legördülő listából). Mivel a rendelések a pizza nevével hivatkoznak a pizzára, átnevezéskor a rendelések is az új nevet kapják, törléskor pedig – megerősítés után – a pizza rendelései is törlődnek. Az eredeti adatok az `npm run seed` paranccsal állíthatók vissza.
+
 Admin felhasználó létrehozása: töltsd ki az `ADMIN_USERNAME` / `ADMIN_PASSWORD` értékét a `.env`-ben, majd futtasd: `npm run seed` (lásd lent).
 
 ## Adatbázis betöltése
