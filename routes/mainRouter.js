@@ -6,6 +6,8 @@ const { isLoggedIn, isAdmin, isGuest } = require("../middleware/auth");
 
 router.get("/", pizzaController.home);
 router.get("/adatbazis", pizzaController.database);
+router.get("/kapcsolat", messageController.contactGet);
+router.post("/kapcsolat", messageController.contactRules, messageController.contactPost);
 
 router.get("/register", isGuest, controller.registerGet);
 router.post("/register", isGuest, controller.registerPost);

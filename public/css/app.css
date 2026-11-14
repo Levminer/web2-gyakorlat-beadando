@@ -304,3 +304,58 @@
     font-size: 48px;
     color: #ffbe33;
 }
+
+/* Kapcsolat */
+
+.contact_form label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.book_section .contact_form .form-control {
+    margin-bottom: 0;
+}
+
+.book_section .contact_form textarea.form-control {
+    height: auto;
+    padding-top: 12px;
+    resize: vertical;
+}
+
+.book_section .contact_form .form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+.contact_form .form-group {
+    margin-bottom: 20px;
+}
+
+.contact_info {
+    background-color: #222831;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    margin-top: 30px;
+}
+
+.contact_info h4 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.contact_info i {
+    color: #ffbe33;
+    width: 22px;
+}
+
+.contact_info a {
+    color: #ffbe33;
+}
+
+@media (min-width: 992px) {
+    .contact_info {
+        margin-top: 32px;
+        margin-left: 20px;
+    }
+}
