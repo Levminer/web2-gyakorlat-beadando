@@ -1,0 +1,12 @@
+<%- include("partials/header", { title: cim }) %>
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="message_empty">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+            <h2 class="mt-3"><%= statusz %> – <%= cim %></h2>
+            <p><%= szoveg %></p>
+            <a href="/" class="btn btn-warning">Vissza a főoldalra</a>
+        </div>
+    </div>
+</section>
+<%- include("partials/footer") %>
